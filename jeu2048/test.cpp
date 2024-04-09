@@ -20,6 +20,9 @@ int interactif() {
  */
 
 
+void testSlide(){
+}
+
 void teste3() {
   Grille g;
   vector<vector<int>> v =
@@ -100,6 +103,7 @@ void testFV() {
 }
 
 int main() {
+    teste3();
   // testFV();
   //  interactif();
   return 0;
