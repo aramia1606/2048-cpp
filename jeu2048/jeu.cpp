@@ -45,6 +45,7 @@ bool succes(const Grille &g) {
 @int val la veleur à mettre dans la case
 */
 bool chargerCase(Grille &g , int n , int val){
+    if(n>=0 and val%2==0){
     int i=0, j=0, dim= dimension(g);
     vector<vector<int>> v = g.table;
     while(n>1){
@@ -56,6 +57,9 @@ bool chargerCase(Grille &g , int n , int val){
         }  
     }
     g.table.at(i).at(j-1) =val;
+    return true;
+    }
+    else{return false;}
 }
 bool init(Grille &g, int dimension, int cible, int proportion) {
     if(dimension <=0 or // Vérifcation dimension positif stric
@@ -92,72 +96,108 @@ bool charge(Grille &g, vector<vector<int>> &v, int cible, int proportion) {
     else if(cible<=0){ cerr << "Nombre cible incorrect (négatif)"; return res; }
     else if(proportion <0 and proportion > 10){ cerr << "Proportion incorrecte il doit être entre 0 et 10"; return res;} 
     else{
+        g.cible = cible; 
         g.score = 0;
-        for(int i =0; i<dim; i++){
-            for (int j = 0; j< v.at(i).size(); j++){
-                g.table.at(i).at(j) = v.at(i).at(j);
-            }
+        g.table=v;
+        g.prop2 = proportion; //Initialise la proportion de 2 
+        g.prop4 = 10 - proportion; // Initialise la proportion de 4
+    return true; 
         }
-    }
+  
   // a faire
   return res;
 }
-    
-/*fusion : Renvoie true si la fusion et possible ET si la position de fin est correcte
-@param  en initialisant la grille `a partir du vecteur v : chacune de ses
-lignes donne les valeurs des tuiles, de gauche `a droite (la valeur 0 d´esigne une case vide).
-Le score de la grille est initialis´e `a 0 quel que soit le contenu de v.
-Cette fonction permet de placer la grille dans une configuration d´efinie `a l’avance.case1 contenant sa position , sa valeur
-@param case2 contenant sa position , sa valeur
-@param fin la case à changer avec la valeur fusionné des deux cases si cela est possible
 
-*/
-bool fusion(int case1, int case2){ 
-    if(case1 == case2 and case1!=0 and case2 !=0){
-        case1 = 0;
-        case2 = case2*case2;
-        return true;
-    }
-    else{return false;}
+
+void afficheVector(vector<int> v, string s){
+    for(size_t i =0 ; i<v.size(); i++){cout << v.at(i)<<" ";}cout<<s<<endl;
 }
 
-/*slide : renvoie un vecteur ou toutes les cases sont slidés et fusionnés (si cela est possible) vers l'indice 0
+/*slide : renvoie un vecteur ou toutes les cases sont slidés et fusionnés (si cela est possible) vers l'indice 0 (vers la gauche)
 @param v est un vecteur d'entier provenant de la grille
 */
-vector<int> slide(vector<int> v){
-    
-        cout <<"repère" ;
-    int nbDernier=0;
-    size_t indice =0; 
-    for(size_t i =0 ; i<v.size(); i++){
+vector<int> slide( vector<int> v){
+    size_t indice =0;
+    for(size_t i =1 ; i<v.size(); i++){
         if(v.at(i) != 0){
-            indice = indice +1;
-            if(v.at(i) == v.at(indice-1)){
-                v.at(indice-1)= v.at(i)*v.at(i);
-                v.at(i) = 0;
+            if(v.at(indice) ==0){
+                v.at(indice)=v.at(i);
+                v.at(i) =  0;
+            }
+            else if(v.at(i) == v.at(indice) ){
+                v.at(indice)=v.at(i)*v.at(i);
+                v.at(i)=0;
+                indice = indice+1;
             }
             else{
-                v.at(indice-1) = nbDernier;
-                v.at(i) = 0;
+                indice = indice +1;
+                v.at(indice)=v.at(i);
+                if (indice != i) {
+                     v.at(i)= 0;
+                }
             }
         }
-    } 
+    }
+    return v;
+}
+vector<int> inverse(vector<int> v){
+    vector<int> inverse;
+    for(int i=v.size()-1 ; i>=0; i--){
+        inverse.push_back(v.at(i));
+    }
+    return inverse;
 }
 
-
     
-int droite(Grille &g)  { int res = -1; return res; }
+int droite(Grille &g)  {
+    
+    for(int i=0; i<dimension(g); i++){
+        g.table.at(i)=inverse(slide(inverse(g.table.at(i))));
+    }
+    return vides(g); 
+}
 
-int gauche(Grille &g) { int res = -1; return res; }
+int gauche(Grille &g) {
+    for(int i=0; i<dimension(g); i++){
+        g.table.at(i)=slide( g.table.at(i));
+    }
+    return vides(g); 
+} 
+
+
     
     
 /* en initialisant la grille `a partir du vecteur v : chacune de ses
 lignes donne les valeurs des tuiles, de gauche `a droite (la valeur 0 d´esigne une case vide).
 Le score de la grille est initialis´e `a 0 quel que soit le contenu de v.
 Cette fonction permet de placer la grille dans une configuration d´efinie `a l’avance.*/
-int haut(Grille &g)    { int res = -1; return res; }
+int haut(Grille &g)    { 
+    for(int i=0; i<dimension(g); i++){
+        vector<int> colonne;
+        for(int j=0; j<dimension(g); j++){
+            colonne.push_back(g.table.at(j).at(i));
+        }
+        vector<int> slidedColonne= slide(colonne);
+        for(int k=0; k<dimension(g); k++){
+            g.table.at(k).at(i)=slidedColonne.at(k);
+        }
+    }
+    return vides(g);  
+}
 
-int bas(Grille &g)     { int res = -1; return res; }
+int bas(Grille &g)     { 
+    for(int i=0; i<dimension(g); i++){
+        vector<int> colonne;
+        for(int j=0; j<dimension(g); j++){
+            colonne.push_back(g.table.at(j).at(i));
+        }
+        vector<int> slidedColonne= inverse(slide(inverse(colonne)));
+        for(int k=0; k<dimension(g); k++){
+            g.table.at(k).at(i)=slidedColonne.at(k);
+        }
+    }
+    return vides(g);    
+}
 
 
 /*		 Pour les extensions éventuelles */
