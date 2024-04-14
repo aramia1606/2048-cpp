@@ -33,6 +33,6 @@ int place(const Grille &g) {
   cible = rand() % n;
   // Mettre l'instruction suivante en commentaire si vous ne voulez
   // plus avoir le message.
-  //  cerr << "Indice de la prochaine tuile: " << cible << endl;
+    cerr << "Indice de la prochaine tuile: " << cible << endl;
   return cible+1;
 }

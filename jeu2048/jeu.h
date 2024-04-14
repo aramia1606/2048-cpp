@@ -23,6 +23,10 @@ using namespace std;
 typedef struct {
   // structure a completer selon vos besoins.
   vector<vector<int>> table;	// carre de la bonne dimension
+    int score;
+    int prop2;
+    int prop4;
+    int cible;
 } Grille;
 
 /* déclarations de fonctions. Tout fichier qui fait un include de jeu.h

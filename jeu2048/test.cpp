@@ -8,7 +8,7 @@ int interactif() {
   // a faire ulterieurement
   Grille g;
   assert(init(g, 4, 1024, 9)); // exemple d'initialisation d'une grille.
-  
+
   return 0;
 }
 
@@ -19,9 +19,6 @@ int interactif() {
  * Pour l'instant l'appel à cette fonction est mis en commentaire.
  */
 
-
-void testSlide(){
-}
 
 void teste3() {
   Grille g;
@@ -101,9 +98,25 @@ void testFV() {
   teste4();
   teste5();
 }
+/*Test l'initialisation correct de la grille*/
+int monTeste1(){
+    Grille g;
+    assert(init(g, 4, 1024, 9)); // exemple d'initialisation d'une grille.
+  affiche(g);
+  return 0;
+}
+
+int monTeste2(){
+    Grille g;
+    assert(init(g, 4, 1024, 9)); // exemple d'initialisation d'une grille.
+  affiche(g);
+  droite(g); affiche(g);  
+}
+
 
 int main() {
-    teste3();
+    //monTeste1();
+    monTeste2();
   // testFV();
   //  interactif();
   return 0;
