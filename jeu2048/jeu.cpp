@@ -97,8 +97,12 @@ bool charge(Grille &g, vector<vector<int>> &v, int cible, int proportion) {
     else if(proportion <0 and proportion > 10){ cerr << "Proportion incorrecte il doit être entre 0 et 10"; return res;} 
     else{
         g.cible = cible; 
-        g.score = 0;
-        g.table=v;
+        g.score = 1;
+        vector<vector<int>> colonne;  // Initialise une colonne
+        for (int i= 0; i< dimension ; i++){
+            colonne.push_back(v.at(i));
+        }
+        g.table = colonne;
         g.prop2 = proportion; //Initialise la proportion de 2 
         g.prop4 = 10 - proportion; // Initialise la proportion de 4
     return true; 
