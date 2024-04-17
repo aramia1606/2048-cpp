@@ -38,6 +38,14 @@ bool succes(const Grille &g) {
     else{return false;}
 }
 
+bool equalString(string s1, string s2){
+    if(s1.size() != s2.size()){return false;}
+    for(int i =0 ; i<s1.size() ; i++){
+        if(s1.at(i) != s2.at(i)){return false;}
+    }
+    return true;
+}
+
 /*Fonction permet de placer une case en fonction de son indice (en partant de 1 puis de droite à gauche de haut en bas) 
 
 @Grille g dans laquelle il faut placer la case 
@@ -239,6 +247,7 @@ void sauve(const Grille &g, string filename) {
 void restaure(Grille &g, string filename) {
 
 }
+
 
 
 /*

@@ -29,6 +29,11 @@ typedef struct {
     int cible;
 } Grille;
 
+
+typedef struct {
+    string nom;
+    bool val;
+} Commande;
 /* déclarations de fonctions. Tout fichier qui fait un include de jeu.h
  * connaîtra donc les en-têtes de ces fonctions.
  */
@@ -47,5 +52,9 @@ void sauve(const Grille &g, string filename);
 // pour les fonctions mises à disposition
 int nouvelle(const Grille &g), place(const Grille &g);
 void resetRand(bool mode);
+
+//Fonction rajoutées 
+bool chargerCase(Grille &g , int n , int val);
+bool equalString(string s1, string s2);
 
 #endif
