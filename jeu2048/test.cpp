@@ -98,7 +98,6 @@ void testFV() {
   teste4();
   teste5();
 }
-/*Test l'initialisation correct de la grille*/
 void monTeste1(){
     Grille g;
     assert(init(g, 4, 1024, 9)); // exemple d'initialisation d'une grille.
@@ -109,36 +108,29 @@ void monTeste2(){
     Grille g;
     init(g,4,1024,5);
   g.table  =
-  // une grille bloquée.
     { { 0,0,0,0 }, { 0,0,2,2 }, {2,2,2,2}, { 2, 4, 16, 32} };
     affiche(g);
   gauche(g); affiche(g);
     g.table  =
-  // une grille bloquée.
     { { 0,0,0,0 }, { 0,0,2,2 }, {2,2,2,2}, { 2, 4, 16, 32} };
     affiche(g);
   droite(g); affiche(g);
-    g.table  =
-  // une grille bloquée.
-    { { 0,0,0,2 }, { 0,4,2,2 }, {2,2,2,2}, { 2, 4, 2, 32} };
-    affiche(g);
-  gauche(g); affiche(g);
 }
 void monTeste3(){
     Grille g;
     g.table  =
-  // une grille bloquée.
-    { { 2,2,64,2 }, { 2,0,0,0 }, {2,0,0,2}, { 64, 4, 64, 32} } ;// exemple d'initialisation d'une grille
+    { { 2,2,64,2 }, { 2,0,0,0 }, {2,0,0,2}, { 64, 4, 64, 32} } ;
   affiche(g);
     bas(g); affiche(g);
+    haut(g); affiche(g);
 }
 
 
 int main() {
-    //monTeste1();
-    //monTeste2();
-   // monTeste3();
-   //testFV();
-  //  interactif();
+  //monTeste1();
+  //monTeste2();
+  //monTeste3();
+  //testFV();
+  //interactif();
   return 0;
 }
