@@ -15,28 +15,34 @@ int interactif() {
         << endl
         << "3: petit 3x3\t\t4: Classique 4x4\n5: Grand 5x5\t\t6: Immense 6x6\t\t\n8: Immense  8x8"<< endl;
     cin >>dim; 
-    }while(dim<3 or dim>8 or dim==7);//Verificattion pour que dim soit correct
+    }while(dim<3 or dim>8 or dim==7);//Verification pour que dim soit correct
     init(main_g, dim, 2048, 5);
+    cout<<"Quel est votre objectif ?"<<endl;
+    cin>>main_g.cible;
+    //dimligne=dim; // dimension d'une ligne
     // Action du joueur
     //Penser à rajouter dans l'affichage les action possibles 
     string action;
     
     bool continuer=true;
     affiche(main_g);
+
     do{//bool errorText=(not(action =="droite" or action =="gauche" or action =="haut" or action =="bas"));
         do{
-            cout<< ">> ";cin >>action;
-            if(not(action =="droite" or action =="gauche" or action =="haut" or action =="bas")) cout << "Erreur "; 
-          }while(not(action =="droite" or action =="gauche" or action =="haut" or action =="bas"));
-        if(equalString(action,"droite")){
-            if (not droite(main_g)){continuer = false;}
-        }else if(equalString(action,"gauche")){
+            cout<< "Tapez g pour gauche, d pour droite, b pour bas ou h pour haut ou x pour s'arrêter\n>> ";cin >>action;
+            if(not(action =="d" or action =="g" or action =="h" or action =="b")) cout << "Erreur "; 
+          }while(not(action =="d" or action =="g" or action =="h" or action =="b"));
+        
+        if(equalString(action,"d")){
+            if (not droite(main_g)){continuer = false;}  //arrêt si impossible de glisser à d
+        }else if(equalString(action,"g")){
             if (not gauche(main_g)){continuer = false;}
-        }else if(equalString(action,"haut")){
+        }else if(equalString(action,"h")){
             if (not haut(main_g)){continuer = false;}
-        }else if(equalString(action,"bas")){
+        }else if(equalString(action,"b")){
             if (not bas(main_g)){continuer = false;}   
-        }else if(equalString(action,"stop")){continuer = false;}
+        }else if(equalString(action,"x")){continuer = false;
+                                         break;}
          
         else{
         }
@@ -47,11 +53,14 @@ int interactif() {
         
         
         if( continuer == false){
+            cout<<"Objectif : "<<main_g.cible<<endl;
             if(succes(main_g)  or vides(main_g)!=0){
-                cout<<"Gagné"<<endl;
-            }else{
-                cout<<"Perdu"<<endl;
-        }}
+                cout<<"Bravo ! Objectif atteint !"<<endl;
+            }
+            else{
+                cout<<"Perdu... Tu n'as qu'à réessayer."<<endl;
+            }
+        }
     }while(continuer);
 
   return 0;
