@@ -218,6 +218,7 @@ int main() {
   //monTeste1();
   //monTeste2();
   //monTeste3();
+  monTest4();
   //testFV();
   interactif();
   return 0;
