@@ -142,7 +142,7 @@ vector<int> slide(Grille &g, vector<int> v){
             }
             else if(v.at(i) == v.at(indice) ){
                 v.at(indice)=v.at(i)+v.at(i);
-                g.score= g.score + v.at(i)+v.at(i);
+                g.score= g.score + v.at(indice);
                 v.at(i)=0;
                 indice = indice+1;
             }
