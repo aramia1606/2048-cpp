@@ -38,6 +38,14 @@ bool succes(const Grille &g) {
     else{return false;}
 }
 
+bool equalString(string s1, string s2){
+    if(s1.size() != s2.size()){return false;}
+    for(int i =0 ; i<s1.size() ; i++){
+        if(s1.at(i) != s2.at(i)){return false;}
+    }
+    return true;
+}
+
 /*Fonction permet de placer une case en fonction de son indice (en partant de 1 puis de droite à gauche de haut en bas) 
 
 @Grille g dans laquelle il faut placer la case 
@@ -46,23 +54,27 @@ bool succes(const Grille &g) {
 */
 bool chargerCase(Grille &g , int n , int val){
     if(n>=0 and val%2==0){
-    int i=0, j=0, dim= dimension(g);
+    size_t i=0, j=0, dim= dimension(g);
     vector<vector<int>> v = g.table;
     while(n>1){
-        if(v.at(i).at(j)==0){n=n-1;}
-        j=j+1;
+        if(v.at(i).at(j)==0){ n=n-1;}
+               j=j+1;
         if(j>=dim){
             i=i+1;
             j=0;
-        }  
+        } 
     }
+        if(j>0){
     g.table.at(i).at(j-1) =val;
+        }
+        else{
+    g.table.at(i).at(j) =val;}
     return true;
     }
     else{return false;}
 }
 bool init(Grille &g, int dimension, int cible, int proportion) {
-    if(dimension <=0 or // Vérifcation dimension positif stric
+    if(dimension <=0 or // Vérifcation dimension positif strict
         cible<=0 or // Vérifcation cible positif stric
        proportion <0 or proportion > 10 // la proportion de 2 est entre 0 et 10
       ){ ;return false;}
@@ -98,7 +110,11 @@ bool charge(Grille &g, vector<vector<int>> &v, int cible, int proportion) {
     else{
         g.cible = cible; 
         g.score = 0;
-        g.table=v;
+        vector<vector<int>> colonne;  // Initialise une colonne
+        for (int i= 0; i< dim ; i++){
+            colonne.push_back(v.at(i));
+        }
+        g.table = colonne;
         g.prop2 = proportion; //Initialise la proportion de 2 
         g.prop4 = 10 - proportion; // Initialise la proportion de 4
     return true; 
@@ -116,7 +132,7 @@ void afficheVector(vector<int> v, string s){
 /*slide : renvoie un vecteur ou toutes les cases sont slidés et fusionnés (si cela est possible) vers l'indice 0 (vers la gauche)
 @param v est un vecteur d'entier provenant de la grille
 */
-vector<int> slide( vector<int> v){
+vector<int> slide(Grille &g, vector<int> v){
     size_t indice =0;
     for(size_t i =1 ; i<v.size(); i++){
         if(v.at(i) != 0){
@@ -125,7 +141,8 @@ vector<int> slide( vector<int> v){
                 v.at(i) =  0;
             }
             else if(v.at(i) == v.at(indice) ){
-                v.at(indice)=v.at(i)*v.at(i);
+                v.at(indice)=v.at(i)+v.at(i);
+                g.score= g.score + v.at(i)+v.at(i);
                 v.at(i)=0;
                 indice = indice+1;
             }
@@ -147,20 +164,37 @@ vector<int> inverse(vector<int> v){
     }
     return inverse;
 }
-
+/*isSameGrille renvoie true si deux grilles sont identiques, false dans le cas contraire
+@g1 est la première grille 
+@g2 est la seconde
+*/
+bool isSameGrille(Grille g1, Grille g2){ 
+    int size=g1.table.size();
+    vector<vector<int>> table1=g1.table, table2=g2.table;
+    if(g1.table.size()!= g2.table.size()){return false;}
+    for(int i=0; i<size ; i++){
+        for(int j=0; j<size ; j++){
+            if(table1.at(i).at(j) !=table2.at(i).at(j)){return false;}
+        }
+    }
+    return true;
+}
     
 int droite(Grille &g)  {
-    
+    Grille instanceg=g;
     for(int i=0; i<dimension(g); i++){
-        g.table.at(i)=inverse(slide(inverse(g.table.at(i))));
+        g.table.at(i)=inverse(slide(g, inverse(g.table.at(i))));
     }
+    if(isSameGrille(instanceg, g)){return -1;}   
     return vides(g); 
 }
 
 int gauche(Grille &g) {
+    Grille instanceg=g;
     for(int i=0; i<dimension(g); i++){
-        g.table.at(i)=slide( g.table.at(i));
+        g.table.at(i)=slide(g, g.table.at(i));
     }
+    if(isSameGrille(instanceg, g)){return -1;}  
     return vides(g); 
 } 
 
@@ -172,30 +206,34 @@ lignes donne les valeurs des tuiles, de gauche `a droite (la valeur 0 d´esigne 
 Le score de la grille est initialis´e `a 0 quel que soit le contenu de v.
 Cette fonction permet de placer la grille dans une configuration d´efinie `a l’avance.*/
 int haut(Grille &g)    { 
+    Grille instanceg=g;
     for(int i=0; i<dimension(g); i++){
         vector<int> colonne;
         for(int j=0; j<dimension(g); j++){
             colonne.push_back(g.table.at(j).at(i));
         }
-        vector<int> slidedColonne= slide(colonne);
+        vector<int> slidedColonne= slide(g, colonne);
         for(int k=0; k<dimension(g); k++){
             g.table.at(k).at(i)=slidedColonne.at(k);
         }
     }
+    if(isSameGrille(instanceg, g)){return -1;}   
     return vides(g);  
 }
 
 int bas(Grille &g)     { 
+    Grille instanceg=g;
     for(int i=0; i<dimension(g); i++){
         vector<int> colonne;
         for(int j=0; j<dimension(g); j++){
             colonne.push_back(g.table.at(j).at(i));
         }
-        vector<int> slidedColonne= inverse(slide(inverse(colonne)));
+        vector<int> slidedColonne= inverse(slide(g, inverse(colonne)));
         for(int k=0; k<dimension(g); k++){
             g.table.at(k).at(i)=slidedColonne.at(k);
         }
     }
+    if(isSameGrille(instanceg, g)){return -1;}   
     return vides(g);    
 }
 
@@ -209,6 +247,7 @@ void sauve(const Grille &g, string filename) {
 void restaure(Grille &g, string filename) {
 
 }
+
 
 
 /*

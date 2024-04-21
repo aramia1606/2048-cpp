@@ -4,10 +4,55 @@
 /* A faire dans un second temps: petit menu pour exécuter les commandes de
  * l'utilisateur
  */
+
+
 int interactif() {
-  // a faire ulterieurement
-  Grille g;
-  assert(init(g, 4, 1024, 9)); // exemple d'initialisation d'une grille.
+    
+    Grille main_g; 
+    int dim;
+    do{
+    cout<<"Taille de la grille"
+        << endl
+        << "3: petit 3x3\t\t4: Classique 4x4\n5: Grand 5x5\t\t6: Immense 6x6\t\t\n8: Immense  8x8"<< endl;
+    cin >>dim; 
+    }while(dim<3 or dim>8 or dim==7);//Verificattion pour que dim soit correct
+    init(main_g, dim, 2048, 5);
+    // Action du joueur
+    //Penser à rajouter dans l'affichage les action possibles 
+    string action;
+    
+    bool continuer=true;
+    affiche(main_g);
+    do{//bool errorText=(not(action =="droite" or action =="gauche" or action =="haut" or action =="bas"));
+        do{
+            cout<< ">> ";cin >>action;
+            if(not(action =="droite" or action =="gauche" or action =="haut" or action =="bas")) cout << "Erreur "; 
+          }while(not(action =="droite" or action =="gauche" or action =="haut" or action =="bas"));
+        if(equalString(action,"droite")){
+            if (not droite(main_g)){continuer = false;}
+        }else if(equalString(action,"gauche")){
+            if (not gauche(main_g)){continuer = false;}
+        }else if(equalString(action,"haut")){
+            if (not haut(main_g)){continuer = false;}
+        }else if(equalString(action,"bas")){
+            if (not bas(main_g)){continuer = false;}   
+        }else if(equalString(action,"stop")){continuer = false;}
+         
+        else{
+        }
+        
+        
+        chargerCase(main_g, place(main_g) , nouvelle(main_g));
+        affiche(main_g);
+        
+        
+        if( continuer == false){
+            if(succes(main_g)  or vides(main_g)!=0){
+                cout<<"Gagné"<<endl;
+            }else{
+                cout<<"Perdu"<<endl;
+        }}
+    }while(continuer);
 
   return 0;
 }
@@ -98,7 +143,6 @@ void testFV() {
   teste4();
   teste5();
 }
-/*Test l'initialisation correct de la grille*/
 void monTeste1(){
     Grille g;
     assert(init(g, 4, 1024, 9)); // exemple d'initialisation d'une grille.
@@ -109,36 +153,29 @@ void monTeste2(){
     Grille g;
     init(g,4,1024,5);
   g.table  =
-  // une grille bloquée.
     { { 0,0,0,0 }, { 0,0,2,2 }, {2,2,2,2}, { 2, 4, 16, 32} };
     affiche(g);
   gauche(g); affiche(g);
     g.table  =
-  // une grille bloquée.
     { { 0,0,0,0 }, { 0,0,2,2 }, {2,2,2,2}, { 2, 4, 16, 32} };
     affiche(g);
   droite(g); affiche(g);
-    g.table  =
-  // une grille bloquée.
-    { { 0,0,0,2 }, { 0,4,2,2 }, {2,2,2,2}, { 2, 4, 2, 32} };
-    affiche(g);
-  gauche(g); affiche(g);
 }
 void monTeste3(){
     Grille g;
     g.table  =
-  // une grille bloquée.
-    { { 2,2,64,2 }, { 2,0,0,0 }, {2,0,0,2}, { 64, 4, 64, 32} } ;// exemple d'initialisation d'une grille
+    { { 2,2,64,2 }, { 2,0,0,0 }, {2,0,0,2}, { 64, 4, 64, 32} } ;
   affiche(g);
     bas(g); affiche(g);
+    haut(g); affiche(g);
 }
 
 
 int main() {
-    //monTeste1();
-    //monTeste2();
-    monTeste3();
-   //testFV();
-  //  interactif();
+  //monTeste1();
+  //monTeste2();
+  //monTeste3();
+  //testFV();
+  interactif();
   return 0;
 }
