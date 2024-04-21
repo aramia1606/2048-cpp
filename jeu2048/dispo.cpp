@@ -26,6 +26,18 @@ int nouvelle(const Grille &g) {
  * doit etre remplie.
  */
 
+/*
+void grilleDevientVectSimple(Grille g , vector<int> v){
+    int u=4; //sqrt(g.table.size());
+    cout<<u;
+    for(int i=0 ; i<u ; i++){
+        for(int j=0 ; j<u ; j++){
+            v.push_back(g.table.at(i).at(j));
+        }
+    }
+}
+*/
+
 int place(const Grille &g) {
   size_t cible=0, n;
   n = vides(g);
