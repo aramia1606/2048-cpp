@@ -170,6 +170,49 @@ void monTeste3(){
     haut(g); affiche(g);
 }
 
+void monTest4(){
+    Grille g;
+    cout<<"Quel est votre objectif ?"<<endl;
+    cin>>g.cible;
+    g.table  =
+  // une grille bloquée.
+    { { 2,2,0,2 }, { 2,0,0,0 }, {2,0,0,32}, { 64, 4, 4, 32} } ;// exemple d'initialisation d'une grille
+    
+    do{
+        char choix;
+        affiche(g);
+        cout<<"Appuyez sur g pour gauche, d pour droite, b pour bas ou h pour haut ou x pour s'arrêter"<<endl;
+        cin>>choix;
+        if(choix=='g'){
+            gauche(g); 
+            affiche(g);
+        }
+        if(choix=='d'){
+            droite(g); 
+            affiche(g);
+        }
+        if(choix=='b'){
+            bas(g); 
+            affiche(g);
+        }
+        if(choix=='h'){
+            haut(g); 
+            affiche(g);
+        }
+        if(choix=='x'){
+            break;
+        }
+    }while(vides(g)!=0);
+    
+    cout<<"Objectif : "<<g.cible<<endl;
+    if(succes(g)){
+        cout<<"Bravo ! Objectif atteint !";
+    }
+    else{
+        cout<<"Perdu... Tu n'as qu'à réessayer.";
+    }
+}
+
 
 int main() {
   //monTeste1();
