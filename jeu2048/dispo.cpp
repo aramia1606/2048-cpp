@@ -27,12 +27,20 @@ int nouvelle(const Grille &g) {
  */
 
 int place(const Grille &g) {
-  int cible, n;
+  size_t cible=0, n;
   n = vides(g);
   assert(n > 0);
-  cible = rand() % n;
   // Mettre l'instruction suivante en commentaire si vous ne voulez
   // plus avoir le message.
-    cerr << "Indice de la prochaine tuile: " << cible << endl;
-  return cible+1;
+    //cerr << "Indice de la prochaine tuile: " << cible << endl;
+    /*
+    vector<int> v;
+    cout<<v.at(1);
+    //grilleDevientVectSimple( g, v);
+    cout<<v.at(1);
+    */
+    //do {
+        cible = rand() % n;
+    //}while ( v.at(cible) != 0 );
+    return cible;
 }
