@@ -53,26 +53,45 @@ bool equalString(string s1, string s2){
 @int val la veleur à mettre dans la case
 */
 bool chargerCase(Grille &g , int n , int val){
-    if(n>=0 and val%2==0){
+    if(vides(g)==0){
+        return false;
+    }
+    if(val%2==0){
     size_t i=0, j=0, dim= dimension(g);
     vector<vector<int>> v = g.table;
+        do{
+        i=(rand()%dim); //on tire aléatoirement i et j, on a donc une case aléatoire. Si cette case est vide, on la remplit, sinon on retire.
+        j=(rand()%dim);
+        }while(v.at(i).at(j)!=0);
+        g.table.at(i).at(j) =val;
+    }
+    return true;
+    /*
     while(n>1){
-        if(v.at(i).at(j)==0){ n=n-1;}
-               j=j+1;
+        if(v.at(i).at(j)==0){
+            n=n-1;
+        }
+        j=j+1;
         if(j>=dim){
             i=i+1;
             j=0;
         } 
     }
-        if(j>0){
-    g.table.at(i).at(j-1) =val;
-        }
-        else{
-    g.table.at(i).at(j) =val;}
-    return true;
+    if(j>0){
+        g.table.at(i).at(j) =val;//modifié j-1
+    }
+    //
+    //if(v.at(i).at(j)==0){
+    //    
+    //}
+    else{
+        g.table.at(i).at(j) =val;}
+        return true;
     }
     else{return false;}
+    */
 }
+
 bool init(Grille &g, int dimension, int cible, int proportion) {
     if(dimension <=0 or // Vérifcation dimension positif strict
         cible<=0 or // Vérifcation cible positif stric
