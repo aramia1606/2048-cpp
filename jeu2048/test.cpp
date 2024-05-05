@@ -24,14 +24,14 @@ int interactif() {
     //Penser à rajouter dans l'affichage les action possibles 
     string action;
     
-    bool continuer=true;
+        bool continuer=true;
     affiche(main_g);
 
     do{//bool errorText=(not(action =="droite" or action =="gauche" or action =="haut" or action =="bas"));
         do{
             cout<< "Tapez g pour gauche, d pour droite, b pour bas ou h pour haut ou x pour s'arrêter\n>> ";cin >>action;
-            if(not(action =="d" or action =="g" or action =="h" or action =="b")) cout << "Erreur "; 
-          }while(not(action =="d" or action =="g" or action =="h" or action =="b"));
+            if(not(action =="d" or action =="g" or action =="h" or action =="b" or action =="x")) cout << "Erreur "; 
+          }while(not(action =="d" or action =="g" or action =="h" or action =="b" or action =="x"));
         
         if(equalString(action,"d")){
             if (not droite(main_g)){continuer = false;}  //arrêt si impossible de glisser à d
