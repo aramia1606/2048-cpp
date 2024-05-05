@@ -1,5 +1,6 @@
 #include "jeu.h"
 #include <cassert>
+//const int dimligne;
 
 /* A faire dans un second temps: petit menu pour exécuter les commandes de
  * l'utilisateur
@@ -21,40 +22,49 @@ int interactif() {
     cin>>main_g.cible;
     //dimligne=dim; // dimension d'une ligne
     // Action du joueur
-    //Penser à rajouter dans l'affichage les action possibles 
+    //Penser à rajouter dans l'affichage les actions possibles 
     string action;
     
-        bool continuer=true;
+    //cout<<"affiche";
+    bool continuer=true;
     affiche(main_g);
 
     do{//bool errorText=(not(action =="droite" or action =="gauche" or action =="haut" or action =="bas"));
         do{
             cout<< "Tapez g pour gauche, d pour droite, b pour bas, h pour haut ou x pour s'arrêter\n>> ";cin >>action;
-            if(not(action =="d" or action =="g" or action =="h" or action =="b" or action =="x")) cout << "Erreur "; 
+            if(not(action =="d" or action =="g" or action =="h" or action  =="b" or action =="x")) cout << "Erreur "; 
           }while(not(action =="d" or action =="g" or action =="h" or action =="b" or action =="x"));
         
-        if(equalString(action,"d")){
-            if (not droite(main_g)){continuer = false;}  //arrêt si impossible de glisser à d
-        }else if(equalString(action,"g")){
-            if (not gauche(main_g)){continuer = false;}
-        }else if(equalString(action,"h")){
-            if (not haut(main_g)){continuer = false;}
-        }else if(equalString(action,"b")){
-            if (not bas(main_g)){continuer = false;}   
-        }else if(equalString(action,"x")){continuer = false;
-                                         break;}
-         
-        else{
-        }
+        //cout<<"affiche2";
         
+        if(equalString(action,"d")){
+            //cout<<"equal";
+            if (droite(main_g)==-1){continuer = false;}  //arrêt si impossible de glisser à d
+        }
+        else if(equalString(action,"g")){
+            if (gauche(main_g)==-1){continuer = false;}
+        }
+        else if(equalString(action,"h")){
+            if (haut(main_g)==-1){continuer = false;}
+        }
+        else if(equalString(action,"b")){
+            if (bas(main_g)==-1){continuer = false;}   
+        }
+        else if(equalString(action,"x")){continuer = false;
+                                         break;}
+        else{
+            
+        }
+        //cout<<"affiche3";
         
         chargerCase(main_g, place(main_g) , nouvelle(main_g));
         affiche(main_g);
         
+        //cout<<"affiche4";
         
         if( continuer == false){
             cout<<"Objectif : "<<main_g.cible<<endl;
-            if(succes(main_g)  or vides(main_g)!=0){
+            if(succes(main_g)){
                 cout<<"Bravo ! Objectif atteint !"<<endl;
             }
             else{
@@ -62,7 +72,7 @@ int interactif() {
             }
         }
     }while(continuer);
-
+    
   return 0;
 }
 
@@ -183,9 +193,9 @@ void monTest4(){
     Grille g;
     cout<<"Quel est votre objectif ?"<<endl;
     cin>>g.cible;
-    g.table  =
+    //g.table  =
   // une grille bloquée.
-    { { 2,2,0,2 }, { 2,0,0,0 }, {2,0,0,32}, { 64, 4, 4, 32} } ;// exemple d'initialisation d'une grille
+   // { { 2,2,0,2 }, { 2,0,0,0 }, {2,0,0,32}, { 64, 4, 4, 32} } ;// exemple d'initialisation d'une grille
     
     do{
         char choix;
@@ -224,6 +234,7 @@ void monTest4(){
 
 
 int main() {
+    
   //monTeste1();
   //monTeste2();
   //monTeste3();
