@@ -213,7 +213,7 @@ int droite(Grille &g)  {
         //cout<<"droite1";
     }
     //cout<<"droite2";
-    if(isSameGrille(instanceg, g) and vides(g)==0){return -1;}   
+    if(isSameGrille(instanceg, g)){return -1;}   
     return vides(g); 
 }
 
@@ -222,7 +222,7 @@ int gauche(Grille &g) {
     for(int i=0; i<dimension(g); i++){
         g.table.at(i)=slide(g, g.table.at(i));
     }
-    if(isSameGrille(instanceg, g) and vides(g)==0){return -1;}  
+    if(isSameGrille(instanceg, g)){return -1;}  
     return vides(g); 
 } 
 
@@ -245,7 +245,7 @@ int haut(Grille &g)    {
             g.table.at(k).at(i)=slidedColonne.at(k);
         }
     }
-    if(isSameGrille(instanceg, g) and vides(g)==0){return -1;}   
+    if(isSameGrille(instanceg, g)){return -1;}   
     return vides(g);  
 }
 
@@ -261,7 +261,7 @@ int bas(Grille &g)     {
             g.table.at(k).at(i)=slidedColonne.at(k);
         }
     }
-    if(isSameGrille(instanceg, g) and vides(g)==0){return -1;}   
+    if(isSameGrille(instanceg, g) ){return -1;}   
     return vides(g);    
 }
 
@@ -311,5 +311,48 @@ Cette fonction permet de placer la grille dans une configuration d´efinie `a l�
     }
   }
   cout << endl << "Score: " << score(g) << ", Vides: " << vides(g) << endl;
+}
+
+/*Fonctions auxiliaire du menu interactif*/
+void afficheBarre(int n){
+    for(int i = 0; i<n; i++){
+        cout<<endl<<"--------------------------------------------"<<endl;
+    }
+}
+void afficherMenu(int dimension){
+    cout << "Bienvenue au jeu 2048 !" << endl;
+    cout << "S : Commencer " << dimension <<"x"<<dimension<<endl;
+    cout << "1 : Choisir la taille de la grille "<< endl;
+    cout << "2 : Paramètres" << endl;
+    cout << "3 : Quitter" << endl;
+}
+
+
+int Taille_grille(){
+    // Demander à l'utilisateur la taille de la grille jusqu'à ce qu'une valeur correcte soit saisie
+    int dim;
+    do {
+        cout << "Taille de la grille : " << endl
+             << "3: petit 3x3\t\t4: Classique 4x4\n5: Grand 5x5\t\t6: Immense 6x6\t\t\n8: Immense  8x8" << endl;
+        cin >> dim; 
+    } while (dim < 3 or dim > 8 or dim == 7);
+    return dim;
+}
+
+
+void afficherParam(int &cible) {
+    char rep;
+    do{
+    cout << "\nCHANGER L'OBJECTIF: " << endl;
+    cout << "Le jeu se fini à :\n"<< cible <<endl<<
+        "C : Changer le moment ou le jeu se fini \nX : Sortir\n";
+    cin>> rep;
+    if(rep =='C'){
+        cout << "Quel est votre objectif ?" << endl;
+        cin >> cible; 
+    }
+    else if(rep =='X'){break;}  
+    else{cout<<"Erreur\n";}
+        }while(rep != 'X' or rep!='C'); 
 }
 

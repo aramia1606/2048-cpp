@@ -5,65 +5,104 @@
  * l'utilisateur
  */
 
-
-int interactif(){
-    
+int interactif() {
     Grille main_g; 
-    int dim;
+    int dim = 4;
+    int cible = 2048;
+    char reponse;
     do{
-    cout<<"Taille de la grille"
-        << endl
-        << "3: petit 3x3\t\t4: Classique 4x4\n5: Grand 5x5\t\t6: Immense 6x6\t\t\n8: Immense  8x8"<< endl;
-    cin >>dim; 
-    }while(dim<3 or dim>8 or dim==7);//Verification pour que dim soit correct
-    cout<<"Quel est votre objectif ?"<<endl;
-    cin>>main_g.cible;
-
-    init(main_g, dim, 2048, 5);
+    do{
+        afficherMenu(dim);
+        cin>>reponse;
+        if(reponse =='1'){dim =Taille_grille();}
+        else if(reponse =='2'){afficherParam(cible);}
+        else if(reponse =='S' or reponse =='3'){break;}
+        else{cout<<"Erreur\n\n";}
+        cout<<"\n\n\n";
+    }while(reponse !='S' or reponse !='3');
     
-    // Action du joueur
-    //Penser à rajouter dans l'affichage les action possibles 
+    
+    if(reponse == '3'){break;}
+    
+    init(main_g, dim, cible, 5);
+    
     string action;
+    bool continuer = true;
     
-    bool continuer=true;
     affiche(main_g);
-    do{//bool errorText=(not(action =="droite" or action =="gauche" or action =="haut" or action =="bas"));
-        do{
-            cout<< "Tapez g pour gauche, d pour droite, b pour bas, h pour haut ou x pour s'arrêter\n>> ";
-            cin >>action;
-            if(not(action =="d" or action =="g" or action =="h" or action =="b" or action =="x")) cout << "Erreur "; 
-          }while(not(action =="d" or action =="g" or action =="h" or action =="b" or action =="x"));
+    
+    // Boucle principale de jeu
+    do {
+        // Demander à l'utilisateur d'entrer une action valide
+        do {
+            cout << "Tapez g pour gauche, d pour droite, b pour bas, h pour haut ou x pour s'arrêter\n>> ";
+            cin >> action;
+            if (not(action == "d" || action == "g" || action == "h" || action == "b" || action == "x")) {
+                cout << "Erreur ";
+            } 
+        } while (not(action == "d" || action == "g" || action == "h" || action == "b" || action == "x"));
         
-        
-        if(equalString(action,"d")){
-            if (droite(main_g)==-1){continuer = false;}
-        }else if(equalString(action,"g")){ 
-            if ( gauche(main_g)==-1){continuer = false;}
-        }else if(equalString(action,"h")){
-            if ( haut(main_g)==-1){continuer = false;}
-        }else if(equalString(action,"b")){
-            if ( bas(main_g)==-1){continuer = false;}   
-        }else if(equalString(action,"x")){
-          continuer = false;
-          break;}
-       
-        if(continuer == false or vides(main_g)==0){
-            cout<<"Objectif : "<<main_g.cible<<endl;
-            if(succes(main_g)){
-                cout<<"Bravo ! Objectif atteint !"<<endl;
+        // Exécuter l'action sélectionnée par l'utilisateur
+        if (equalString(action, "d")) {
+            if (droite(main_g) == -1) {
+                continuer = false;
             }
-            else{
-                cout<<"Perdu... Tu n'as qu'à réessayer."<<endl;
+        } else if (equalString(action, "g")) { 
+            if (gauche(main_g) == -1) {
+                continuer = false;
             }
+        } else if (equalString(action, "h")) {
+            if (haut(main_g) == -1) {
+                continuer = false;
+            }
+        } else if (equalString(action, "b")) {
+            if (bas(main_g) == -1) {
+                continuer = false;
+            }   
+        } else if (equalString(action, "x")) {
+            continuer = false;
+            break;
         }
-        else{
-            chargerCase(main_g, place(main_g) , nouvelle(main_g));
+       
+        // Vérifier si le joueur a réussi ou échoué
+        if (!continuer || vides(main_g) == 0 || succes(main_g)) {
+            cout << "Objectif : " << main_g.cible << endl;
+            if (succes(main_g)) {
+                cout << "Bravo ! Objectif atteint !"  << endl;
+                cout << 
+                 " __     ______  _    _  __          _______ _   _ \n"
+                 " \\ \\   / / __ \\| |  | | \\ \\        / |_   _| \\ | |\n"
+                 "  \\ \\_/ | |  | | |  | |  \\ \\  /\\  / /  | | |  \\| |\n"
+                 "   \\   /| |  | | |  | |   \\ \\/  \\/ /   | | | . ` |\n"
+                 "    | | | |__| | |__| |    \\  /\\  /   _| |_| |\\  |\n"
+                 "    |_|  \\____/ \\____/      \\/  \\/   |_____|_| \\_|\n"
+                 "                                                  " <<endl;
+                break;
+            } else {
+                cout << "Perdu... Tu n'as qu'à réessayer." << endl;
+                cout << 
+                    "▓██   ██▓ ▒█████   █    ██     ██▓     ▒█████   ▒█████    ██████ ▓█████ \n"
+                 " ▒██  ██▒▒██▒  ██▒ ██  ▓██▒   ▓██▒    ▒██▒  ██▒▒██▒  ██▒▒██    ▒ ▓█   ▀ \n"
+                 "  ▒██ ██░▒██░  ██▒▓██  ▒██░   ▒██░    ▒██░  ██▒▒██░  ██▒░ ▓██▄   ▒███   \n"
+                 "  ░ ▐██▓░▒██   ██░▓▓█  ░██░   ▒██░    ▒██   ██░▒██   ██░  ▒   ██▒▒▓█  ▄ \n"
+                 "  ░ ██▒▓░░ ████▓▒░▒▒█████▓    ░██████▒░ ████▓▒░░ ████▓▒░▒██████▒▒░▒████▒\n"
+                 "   ██▒▒▒ ░ ▒░▒░▒░ ░▒▓▒ ▒ ▒    ░ ▒░▓  ░░ ▒░▒░▒░ ░ ▒░▒░▒░ ▒ ▒▓▒ ▒ ░░░ ▒░ ░\n"
+                 " ▓██ ░▒░   ░ ▒ ▒░ ░░▒░ ░ ░    ░ ░ ▒  ░  ░ ▒ ▒░   ░ ▒ ▒░ ░ ░▒  ░ ░ ░ ░  ░\n"
+                 " ▒ ▒ ░░  ░ ░ ░ ▒   ░░░ ░ ░      ░ ░   ░ ░ ░ ▒  ░ ░ ░ ▒  ░  ░  ░     ░   \n"
+                 " ░ ░         ░ ░     ░            ░  ░    ░ ░      ░ ░        ░     ░  ░\n"
+                 " ░ ░                                                                    " << endl;
+    
+                break;
+            }
+        } else {
+            chargerCase(main_g, place(main_g), nouvelle(main_g));
             affiche(main_g);
         }
-
-    }while(continuer);
-  return 0;
+    } while (continuer);
+    }while(false);
+    return 0;
 }
+
 
 
 /* Quelques fonctions de test mises à disposition.
@@ -82,7 +121,7 @@ void monTest4(){
     do{
         char choix;
         affiche(g);
-        cout<<"Appuyez sur g pour gauche, d pour droite, b pour bas ou h pour haut ou x pour s'arrêter"<<endl;
+        cout<<"Appuyez sur g pour gauche, d pour droite, b pour bas ou h pour haut ou x pour arrêter"<<endl;
         cin>>choix;
         if(choix=='g'){
             gauche(g); 
@@ -225,7 +264,7 @@ int main() {
   //monTeste1();
   //monTeste2();
   //monTeste3();
-  //testFV();
-  interactif();
+  testFV();
+  //interactif();
   return 0;
 }

@@ -56,5 +56,11 @@ void resetRand(bool mode);
 //Fonction rajoutées 
 bool chargerCase(Grille &g , int n , int val);
 bool equalString(string s1, string s2);
+void afficheBarre(int n);
+void afficherMenu(int dimension);
+int Taille_grille();
+void afficherParam(int &cible);
+
+
 
 #endif
