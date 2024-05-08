@@ -53,26 +53,21 @@ bool equalString(string s1, string s2){
 @int val la veleur à mettre dans la case
 */
 bool chargerCase(Grille &g , int n , int val){
-    if(n>=0 and val%2==0){
+    if(vides(g)==0){
+        return false;
+    }
+    if(val%2==0){
     size_t i=0, j=0, dim= dimension(g);
     vector<vector<int>> v = g.table;
-    while(n>1){
-        if(v.at(i).at(j)==0){ n=n-1;}
-               j=j+1;
-        if(j>=dim){
-            i=i+1;
-            j=0;
-        } 
+        do{
+        i=(rand()%dim); //on tire aléatoirement i et j, on a donc une case aléatoire. Si cette case est vide, on la remplit, sinon on retire.
+        j=(rand()%dim);
+        }while(v.at(i).at(j)!=0);
+        g.table.at(i).at(j) =val;
     }
-        if(j>0){
-    g.table.at(i).at(j-1) =val;
-        }
-        else{
-    g.table.at(i).at(j) =val;}
     return true;
-    }
-    else{return false;}
 }
+
 bool init(Grille &g, int dimension, int cible, int proportion) {
     if(dimension <=0 or // Vérifcation dimension positif strict
         cible<=0 or // Vérifcation cible positif stric
@@ -134,29 +129,35 @@ void afficheVector(vector<int> v, string s){
 */
 vector<int> slide(Grille &g, vector<int> v){
     size_t indice =0;
+    //cout<<"slide0";
     for(size_t i =1 ; i<v.size(); i++){
+        //cout<<"slide1";
         if(v.at(i) != 0){
             if(v.at(indice) ==0){
                 v.at(indice)=v.at(i);
                 v.at(i) =  0;
+                //cout<<"slide2";
             }
             else if(v.at(i) == v.at(indice) ){
+                //cout<<"slide3";
                 v.at(indice)=v.at(i)+v.at(i);
-                g.score= g.score + v.at(i)+v.at(i);
+                g.score= g.score + v.at(indice);
                 v.at(i)=0;
                 indice = indice+1;
+                //cout<<"slide4";
             }
             else{
                 indice = indice +1;
                 v.at(indice)=v.at(i);
+                //cout<<"slide5";
                 if (indice != i) {
                      v.at(i)= 0;
                 }
             }
         }
     }
-    return v;
 }
+
 vector<int> inverse(vector<int> v){
     vector<int> inverse;
     for(int i=v.size()-1 ; i>=0; i--){

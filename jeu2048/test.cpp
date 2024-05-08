@@ -4,19 +4,29 @@
 /* A faire dans un second temps: petit menu pour exécuter les commandes de
  * l'utilisateur
  */
-
+bool allowedAction(string action, vector<string> listAction){
+  for(int i =0, i< listAction.size(), i++){
+      if(equalString(listAction.at(i), action){
+        return true;
+      }
+  }
+  return false;
+}
 
 int interactif() {
     
     Grille main_g; 
-    int dim;
+    string dim;
+    vector<string> listAction= ["3","4","5","6","8"]
     do{
     cout<<"Taille de la grille"
         << endl
         << "3: petit 3x3\t\t4: Classique 4x4\n5: Grand 5x5\t\t6: Immense 6x6\t\t\n8: Immense  8x8"<< endl;
     cin >>dim; 
-    }while(dim<3 or dim>8 or dim==7);//Verificattion pour que dim soit correct
-    init(main_g, dim, 2048, 5);
+    }while(not allowedAction(listAction, dim));//Verificattion pour que dim soit correct
+    
+    int dim_int = std::stoi(dim);
+    init(main_g, dim_int, 2048, 5);
     // Action du joueur
     //Penser à rajouter dans l'affichage les action possibles 
     string action;
@@ -25,35 +35,37 @@ int interactif() {
     affiche(main_g);
     do{//bool errorText=(not(action =="droite" or action =="gauche" or action =="haut" or action =="bas"));
         do{
-            cout<< ">> ";cin >>action;
-            if(not(action =="droite" or action =="gauche" or action =="haut" or action =="bas")) cout << "Erreur "; 
-          }while(not(action =="droite" or action =="gauche" or action =="haut" or action =="bas"));
-        if(equalString(action,"droite")){
+            vector<string> listAction= ["d","g", "h", "b","x" ];
+            cout<< "Tapez g pour gauche, d pour droite, b pour bas, h pour haut ou x pour s'arrêter\n>> ";
+            cin >>action;
+            if(not allowedAction(action, listAction)) cout << "Erreur "; 
+          }while(not allowedAction(action, listAction) );
+        if(equalString(action,"d")){
             if (not droite(main_g)){continuer = false;}
-        }else if(equalString(action,"gauche")){
+        }else if(equalString(action,"g")){
             if (not gauche(main_g)){continuer = false;}
-        }else if(equalString(action,"haut")){
+        }else if(equalString(action,"h")){
             if (not haut(main_g)){continuer = false;}
-        }else if(equalString(action,"bas")){
+        }else if(equalString(action,"b")){
             if (not bas(main_g)){continuer = false;}   
-        }else if(equalString(action,"stop")){continuer = false;}
-         
-        else{
+        }else if(equalString(action,"x")){
+          continuer = false;
+          break;}
+        if(continuer == false or vides(main_g)==0){
+            cout<<"Objectif : "<<main_g.cible<<endl;
+            if(succes(main_g)){
+                cout<<"Bravo ! Objectif atteint !"<<endl;
+            }
+            else{
+                cout<<"Perdu... Tu n'as qu'à réessayer."<<endl;
+            }
         }
-        
-        
+        else{
         chargerCase(main_g, place(main_g) , nouvelle(main_g));
         affiche(main_g);
-        
-        
-        if( continuer == false){
-            if(succes(main_g)  or vides(main_g)!=0){
-                cout<<"Gagné"<<endl;
-            }else{
-                cout<<"Perdu"<<endl;
-        }}
-    }while(continuer);
+        }
 
+    }while(continuer);
   return 0;
 }
 
@@ -63,6 +75,48 @@ int interactif() {
  * dans la fonction main()à située en fin de fichier.
  * Pour l'instant l'appel à cette fonction est mis en commentaire.
  */
+void monTest4(){
+    Grille g;
+    cout<<"Quel est votre objectif ?"<<endl;
+    cin>>g.cible;
+    //g.table  =
+  // une grille bloquée.
+   // { { 2,2,0,2 }, { 2,0,0,0 }, {2,0,0,32}, { 64, 4, 4, 32} } ;// exemple d'initialisation d'une grille
+    
+    do{
+        char choix;
+        affiche(g);
+        cout<<"Appuyez sur g pour gauche, d pour droite, b pour bas ou h pour haut ou x pour s'arrêter"<<endl;
+        cin>>choix;
+        if(choix=='g'){
+            gauche(g); 
+            affiche(g);
+        }
+        if(choix=='d'){
+            droite(g); 
+            affiche(g);
+        }
+        if(choix=='b'){
+            bas(g); 
+            affiche(g);
+        }
+        if(choix=='h'){
+            haut(g); 
+            affiche(g);
+        }
+        if(choix=='x'){
+            break;
+        }
+    }while(vides(g)!=0);
+    
+    cout<<"Objectif : "<<g.cible<<endl;
+    if(succes(g)){
+        cout<<"Bravo ! Objectif atteint !";
+    }
+    else{
+        cout<<"Perdu... Tu n'as qu'à réessayer.";
+    }
+}
 
 
 void teste3() {
