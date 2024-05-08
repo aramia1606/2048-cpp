@@ -4,29 +4,23 @@
 /* A faire dans un second temps: petit menu pour exécuter les commandes de
  * l'utilisateur
  */
-bool allowedAction(string action, vector<string> listAction){
-  for(int i =0, i< listAction.size(), i++){
-      if(equalString(listAction.at(i), action){
-        return true;
-      }
-  }
-  return false;
-}
 
-int interactif() {
+
+int interactif(){
     
     Grille main_g; 
-    string dim;
-    vector<string> listAction= ["3","4","5","6","8"]
+    int dim;
     do{
     cout<<"Taille de la grille"
         << endl
         << "3: petit 3x3\t\t4: Classique 4x4\n5: Grand 5x5\t\t6: Immense 6x6\t\t\n8: Immense  8x8"<< endl;
     cin >>dim; 
-    }while(not allowedAction(listAction, dim));//Verificattion pour que dim soit correct
+    }while(dim<3 or dim>8 or dim==7);//Verification pour que dim soit correct
+    cout<<"Quel est votre objectif ?"<<endl;
+    cin>>main_g.cible;
+
+    init(main_g, dim, 2048, 5);
     
-    int dim_int = std::stoi(dim);
-    init(main_g, dim_int, 2048, 5);
     // Action du joueur
     //Penser à rajouter dans l'affichage les action possibles 
     string action;
@@ -35,22 +29,24 @@ int interactif() {
     affiche(main_g);
     do{//bool errorText=(not(action =="droite" or action =="gauche" or action =="haut" or action =="bas"));
         do{
-            vector<string> listAction= ["d","g", "h", "b","x" ];
             cout<< "Tapez g pour gauche, d pour droite, b pour bas, h pour haut ou x pour s'arrêter\n>> ";
             cin >>action;
-            if(not allowedAction(action, listAction)) cout << "Erreur "; 
-          }while(not allowedAction(action, listAction) );
+            if(not(action =="d" or action =="g" or action =="h" or action =="b" or action =="x")) cout << "Erreur "; 
+          }while(not(action =="d" or action =="g" or action =="h" or action =="b" or action =="x"));
+        
+        
         if(equalString(action,"d")){
-            if (not droite(main_g)){continuer = false;}
-        }else if(equalString(action,"g")){
-            if (not gauche(main_g)){continuer = false;}
+            if (droite(main_g)==-1){continuer = false;}
+        }else if(equalString(action,"g")){ 
+            if ( gauche(main_g)==-1){continuer = false;}
         }else if(equalString(action,"h")){
-            if (not haut(main_g)){continuer = false;}
+            if ( haut(main_g)==-1){continuer = false;}
         }else if(equalString(action,"b")){
-            if (not bas(main_g)){continuer = false;}   
+            if ( bas(main_g)==-1){continuer = false;}   
         }else if(equalString(action,"x")){
           continuer = false;
           break;}
+       
         if(continuer == false or vides(main_g)==0){
             cout<<"Objectif : "<<main_g.cible<<endl;
             if(succes(main_g)){
@@ -61,8 +57,8 @@ int interactif() {
             }
         }
         else{
-        chargerCase(main_g, place(main_g) , nouvelle(main_g));
-        affiche(main_g);
+            chargerCase(main_g, place(main_g) , nouvelle(main_g));
+            affiche(main_g);
         }
 
     }while(continuer);

@@ -50,7 +50,7 @@ bool equalString(string s1, string s2){
 
 @Grille g dans laquelle il faut placer la case 
 @int n l'indice de la case
-@int val la veleur à mettre dans la case
+@int val la valeur à mettre dans la case
 */
 bool chargerCase(Grille &g , int n , int val){
     if(vides(g)==0){
@@ -66,6 +66,30 @@ bool chargerCase(Grille &g , int n , int val){
         g.table.at(i).at(j) =val;
     }
     return true;
+    /*
+    while(n>1){
+        if(v.at(i).at(j)==0){
+            n=n-1;
+        }
+        j=j+1;
+        if(j>=dim){
+            i=i+1;
+            j=0;
+        } 
+    }
+    if(j>0){
+        g.table.at(i).at(j) =val;//modifié j-1
+    }
+    //
+    //if(v.at(i).at(j)==0){
+    //    
+    //}
+    else{
+        g.table.at(i).at(j) =val;}
+        return true;
+    }
+    else{return false;}
+    */
 }
 
 bool init(Grille &g, int dimension, int cible, int proportion) {
@@ -87,7 +111,7 @@ bool init(Grille &g, int dimension, int cible, int proportion) {
         g.prop2 = proportion; //Initialise la proportion de 2 
         g.prop4 = 10 - proportion; // Initialise la proportion de 4
         chargerCase(g, place(g) , nouvelle(g));
-        chargerCase(g, place(g) , nouvelle(g));
+        chargerCase(g, place(g) , nouvelle(g)); //pour mettre deux tuiles au début
     }
     return true; 
 }
@@ -156,8 +180,8 @@ vector<int> slide(Grille &g, vector<int> v){
             }
         }
     }
+    return v;
 }
-
 vector<int> inverse(vector<int> v){
     vector<int> inverse;
     for(int i=v.size()-1 ; i>=0; i--){
@@ -183,10 +207,13 @@ bool isSameGrille(Grille g1, Grille g2){
     
 int droite(Grille &g)  {
     Grille instanceg=g;
+    //cout<<"droite0";
     for(int i=0; i<dimension(g); i++){
         g.table.at(i)=inverse(slide(g, inverse(g.table.at(i))));
+        //cout<<"droite1";
     }
-    if(isSameGrille(instanceg, g)){return -1;}   
+    //cout<<"droite2";
+    if(isSameGrille(instanceg, g) and vides(g)==0){return -1;}   
     return vides(g); 
 }
 
@@ -195,7 +222,7 @@ int gauche(Grille &g) {
     for(int i=0; i<dimension(g); i++){
         g.table.at(i)=slide(g, g.table.at(i));
     }
-    if(isSameGrille(instanceg, g)){return -1;}  
+    if(isSameGrille(instanceg, g) and vides(g)==0){return -1;}  
     return vides(g); 
 } 
 
@@ -218,7 +245,7 @@ int haut(Grille &g)    {
             g.table.at(k).at(i)=slidedColonne.at(k);
         }
     }
-    if(isSameGrille(instanceg, g)){return -1;}   
+    if(isSameGrille(instanceg, g) and vides(g)==0){return -1;}   
     return vides(g);  
 }
 
@@ -234,7 +261,7 @@ int bas(Grille &g)     {
             g.table.at(k).at(i)=slidedColonne.at(k);
         }
     }
-    if(isSameGrille(instanceg, g)){return -1;}   
+    if(isSameGrille(instanceg, g) and vides(g)==0){return -1;}   
     return vides(g);    
 }
 
@@ -285,3 +312,4 @@ Cette fonction permet de placer la grille dans une configuration d´efinie `a l�
   }
   cout << endl << "Score: " << score(g) << ", Vides: " << vides(g) << endl;
 }
+
