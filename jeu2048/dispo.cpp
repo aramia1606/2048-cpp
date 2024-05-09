@@ -39,20 +39,13 @@ void grilleDevientVectSimple(Grille g , vector<int> v){
 */
 
 int place(const Grille &g) {
-  size_t cible=0, n;
+  int cible, n;
   n = vides(g);
   assert(n > 0);
+  cible = rand() % n;
   // Mettre l'instruction suivante en commentaire si vous ne voulez
   // plus avoir le message.
-    //cerr << "Indice de la prochaine tuile: " << cible << endl;
-    /*
-    vector<int> v;
-    cout<<v.at(1);
-    //grilleDevientVectSimple( g, v);
-    cout<<v.at(1);
-    */
-    //do {
-        cible = rand() % n;
-    //}while ( v.at(cible) != 0 );
-    return cible;
+  //  cerr << "Indice de la prochaine tuile: " << cible << endl;
+  return cible;
 }
+

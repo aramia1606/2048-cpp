@@ -26,14 +26,16 @@ typedef struct {
     int score;
     int prop2;
     int prop4;
-    int cible;
+    unsigned int cible;
 } Grille;
 
 
-typedef struct {
+typedef struct{
+    Grille g;
     string nom;
-    bool val;
-} Commande;
+} Sauvegarde;
+
+typedef vector<Sauvegarde> listSauvegarde;
 /* déclarations de fonctions. Tout fichier qui fait un include de jeu.h
  * connaîtra donc les en-têtes de ces fonctions.
  */
