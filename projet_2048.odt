@@ -1,0 +1,27 @@
+Marion Dollé et Andy Ramiandrisoa (groupe 5)
+
+Description de l’état du projet :
+Le programme marche jusqu’à ce que l’utilisateur perde : quand toutes les cases sont remplies et qu’il n’y
+a plus de mouvement possible.
+Le programme passe tous les tests d'origines sans problème. Un petit début de menu de démarrage a également été rajouté 
+comprennant: 
+ - S : pour strart 
+ - Des paramètres (pour modifier le la valeur à atteindre comme dans le jeu original)
+ - Un sous-menu pour modifier la taille de la grille 
+ - Un bouton pour quitter le programme
+
+A priori, suffisamment de vérifications sont faites pour éviter des bugs tel que des entrées incorrects.
+
+Participation de chacun : (Andy et Marion, groupe 5)
+Nous nous sommes partagé le travail :
+- les fonctions droite et gauche ont été codées par Marion
+- les fonctions haut et bas ont été codées par Andy
+- la fonction vides par Marion
+- la fonction equalString par Andy
+- la fonction ChargerCase codée par Andy, corrigée par Marion
+- les fonctions init et charge codée par Andy et Marion, en TD
+- la fonction slide codée par Andy
+- la fonction inverse par Marion
+- la fonction isSameGrille par Andy
+- les tests ont été réalisé par Andy et Marion
+ -la fonction interactive par Andy et Marion
